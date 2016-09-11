@@ -1,11 +1,12 @@
 require 'open-uri'
 require 'nokogiri'
+require 'json'
 
 url = "https://www.flixster.com/"
 html = open(url)
 doc = Nokogiri::HTML(html)
 listing = []
-doc.css('.carousel').each_with_index do |block, index|
+doc.css('.carousel').each do |block|
   movies_in_category = []
   category = block.at_css('.carousel-heading h2').text
   block.css('.carousel-item').each do |movie|
@@ -29,7 +30,4 @@ doc.css('.carousel').each_with_index do |block, index|
   listing << h
 end
 
-listing.each do |key, value|
-  p "#{key}"
-  p "  #{value}"
-end
+puts JSON.pretty_generate(listing)
